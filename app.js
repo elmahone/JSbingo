@@ -1,44 +1,56 @@
-var scale = [];
+'use strict';
 
-function generateNumArray(numberRange) {
-    for (var i = 1; i <= numberRange; i++) {
-        scale.push(i);
+const numberScale = [];
+
+function generateNumberArray(numberRangeMax) {
+    if (numberRangeMax <= 75) {
+        for (let i = 1; i <= numberRangeMax; i++) {
+            numberScale.push(i);
+        }
+        return numberScale;
+    } else if (numberRangeMax > 75) {
+        console.log('Max value for number range is 75');
+        return false;
+    } else {
+        console.log('Something went wrong');
+        return false;
     }
-    return scale;
 }
 
-
 function generateBingoRow(rowLength, numberArr) {
-    
-    var bingoRow = [];
-    for (var i = 1; i <= rowLength; i++) {
-        var randomNumber = Math.floor((Math.random() * numberArr.length));
+    const bingoRow = [];
+    for (let i = 1; i <= rowLength; i++) {
+        let randomNumber = Math.floor((Math.random() * numberArr.length));
         bingoRow.push(numberArr[randomNumber]);
         numberArr.splice(randomNumber, 1);
     }
     return bingoRow;
 }
 
-function generateBingoGrid(rows, numberRange) {
-    var cardArray = [];
-    var tempArray = scale.slice();
-    for (var i = 1; i <= rows; i++) {
-        console.log(generateBingoRow(rows, tempArray));
-        cardArray.push(generateBingoRow(rows, tempArray));
+function generateBingoGrid(bingoCardRows, numberRangeMax) {
+    const cardArray = [];
+    const tempArray = numberScale.slice();
+    for (let i = 1; i <= bingoCardRows; i++) {
+        console.log(generateBingoRow(bingoCardRows, tempArray));
+        cardArray.push(generateBingoRow(bingoCardRows, tempArray));
     }
-    
     return cardArray;
 }
 
-function generateBingoGrids(numOfPlayers, rows, numberRange) {
-    generateNumArray(numberRange);
-    var playerArray = [];
-    for (var i = 1; i <= numOfPlayers; i++) {
-        console.log("------"+"Player "+i+"-------");
-        playerArray.push(generateBingoGrid(rows, numberRange));
+function generateBingoGrids(numberOfPlayers, bingoCardRows, numberRangeMax) {
+    generateNumberArray(numberRangeMax);
+    const playerArray = [];
+    if (numberOfPlayers >= 1 && numberOfPlayers <= 50) {
+        for (let i = 1; i <= numberOfPlayers; i++) {
+            console.log("------" + "Player " + i + "-------");
+            playerArray.push(generateBingoGrid(bingoCardRows, numberRangeMax));
+        }
+    } else if (numberOfPlayers > 50) {
+        console.log('Number of players must be more than 50');
+    } else {
+        return console.log('Number of players must be more than ' + numberOfPlayers);
     }
     return playerArray;
 }
 
-
-generateBingoGrids(4, 5, 75);
+generateBingoGrids(5, 5, 75);
